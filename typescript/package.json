@@ -1,0 +1,13 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com-dipadip:dipadip_learn/typescript.git",
+  "author": "Adi Prasetya Putra <dipadip.dev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "rm -rf build/ && tsc",
+    "ts": "rm -rf build/ && tsc -w",
+    "dev": "nodemon ./build/index.js"
+  }
+}

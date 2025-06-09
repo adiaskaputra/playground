@@ -1,0 +1,7 @@
+dataset-glasses/test/with_glasses/*
+dataset-glasses/test/without_glasses/*
+dataset-glasses/train/with_glasses/*
+dataset-glasses/train/without_glasses/*
+dataset-glasses/val/with_glasses/*
+dataset-glasses/val/without_glasses/*
+dataset-collection/*
