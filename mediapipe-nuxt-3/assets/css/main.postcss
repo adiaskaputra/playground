@@ -1,0 +1,110 @@
+html,
+body,
+#__nuxt {
+  @apply h-full;
+}
+
+body {
+  @apply bg-white;
+  @apply dark:bg-gray-800;
+}
+
+.g-page {
+  &__content {
+    @apply bg-gray-100 py-6 px-4 rounded;
+    &--loading {
+      @apply opacity-20;
+      @apply animate-pulse;
+    }
+  }
+}
+
+.face-detection {
+  @apply flex flex-col gap-10;
+
+  .image-container {
+    @apply w-full relative cursor-pointer;
+    @apply bg-gray-200;
+    @apply z-[0];
+  }
+  .video-container {
+    @apply relative;
+
+    video {
+      clear: both;
+      display: block;
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+    }
+
+    p {
+      @apply absolute py-2 m-0;
+      @apply z-[2];
+      @apply text-[12px];
+      position: absolute;
+      background-color: #007f8b;
+      color: #fff;
+      border: 1px dashed rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  .img-label {
+    @apply text-center pb-2 font-bold text-gray-600 text-[12px];
+  }
+
+  .info {
+    @apply absolute;
+    @apply z-[1];
+    @apply bg-green-50;
+    @apply text-gray-800 text-[14px] text-center;
+  }
+  .highlighter {
+    @apply absolute;
+    @apply z-[1];
+    @apply border-dashed border-[1px] border-[#fff];
+    background: rgba(0, 255, 0, 0.25);
+  }
+  .key-point {
+    @apply absolute size-[4px] block;
+    @apply bg-red-600 rounded-[50%];
+    @apply z-[1];
+  }
+
+  .canvas {
+    z-index: 1;
+    position: absolute;
+    pointer-events: none;
+  }
+  .output_canvas {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+  }
+
+  .blend-shapes {
+    @apply relative;
+    @apply w-full;
+    float: left;
+    margin: 2% 1%;
+    cursor: pointer;
+    &__item {
+      display: flex;
+      align-items: center;
+      height: 20px;
+    }
+    &__label {
+      display: flex;
+      width: 120px;
+      justify-content: flex-end;
+      align-items: center;
+      margin-right: 4px;
+    }
+    &__value {
+      display: flex;
+      height: 16px;
+      align-items: center;
+      background-color: #007f8b;
+    }
+  }
+}

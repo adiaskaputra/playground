@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doc signing</title>
+    <style>
+       /* [ A4, F4, Legal, Letter, Kuarto ] */
+       /* letter: 815.9px 1056px */
+       /* Legal: 815.9px 1344px */
+       /* A4: 793.7px 1122.5px */
+       /* A5: 559.37px 793.7px */
+
+      :root {
+        font-family: Inter, sans-serif;
+        font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+      }
+
+      @page {
+        size: A4;
+        margin: 20px 5px;
+      }
+
+      body {
+        font-family: Inter, sans-serif;
+      }
+
+      .doc {
+        min-height: calc(1122.5px - 80px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      /* G L O B A L */
+      .g-bold {
+        font-weight: bold;
+      }
+      .g-italic {
+        font-style: italic;
+      }
+      .g-justify {
+        text-align: justify;
+      }
+      .g-flex-item-center {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .g-flex-item-end {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+      }
+
+      /* PAGE 1 - H E A D E R */
+      .header {
+        border-bottom: solid 2px black;
+        padding-bottom: 10px;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      /* PAGE 1 - F O O T E R */
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 12px;
+        border-bottom: solid 1px black;
+        padding-bottom: 20px;
+        /* margin-top: 20px;
+        margin-bottom: 40px; */
+
+        img.kementerian {
+          width: 70px;
+        }
+        img.debindo {
+          width: 100px;
+        }
+
+        table {
+          tr {
+            td {
+              padding: 0px;
+            }
+          }
+        }
+
+        .footer__title {
+          font-size: 14px;
+          padding-bottom: 4px;
+        }
+      }
+
+      /* S I G N E R */
+      .signer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 18px;
+        padding-bottom: 18px;
+
+        #signature-date {
+          border-bottom: solid 1px black;
+          font-size: 14px;
+        }
+
+        .signer__signature-position {
+          height: 85px;
+          border-bottom: solid 1px black;
+        }
+
+        .signer__organizer {
+          background-color: #dbdbdc;
+          padding: 10px 16px;
+          border-radius: 8px;
+        }
+
+        table,
+        th,
+        td {
+          border: 1.4px solid black;
+          border-collapse: collapse;
+          font-size: 12px;
+        }
+
+        table tr td {
+          font-size: 10px;
+          width: 100px;
+          text-align: center;
+        }
+
+        table tr:nth-child(1) {
+          font-weight: bold;
+
+          td {
+            padding-left: 8px;
+            padding-right: 8px;
+          }
+        }
+
+        table tr:nth-child(2) {
+          height: 60px;
+        }
+      }
+
+      /* F O R M */
+      .form {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        padding-bottom: 4px;
+        font-size: 12px;
+
+        .form__label {
+          width: auto;
+        }
+        .form__answer {
+          flex: auto;
+          border-bottom: solid 1px #dbdbdc;
+        }
+      }
+      #stand {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        padding-bottom: 8px;
+        font-size: 12px;
+      }
+      #stand-label {
+        padding-bottom: 4px;
+        font-size: 12px;
+      }
+      .stand-item {
+        display: flex;
+        gap: 3px;
+        font-size: 12px;
+      }
+      .stand--col {
+        flex: 1;
+      }
+
+      /* T N C */
+      .tnc {
+        .tnc__title {
+          font-size: 14px;
+          font-weight: bold;
+          text-align: center;
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+        .tnc__item-container {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+
+          .tnc__item-container-col {
+            flex: 1;
+          }
+        }
+        .tnc__item {
+          padding-bottom: 16px;
+          text-align: justify;
+
+          .tnc__item__label {
+            font-size: 12px;
+          }
+          .tnc__item__content {
+            font-size: 10px;
+
+            ul {
+              padding-left: 14px;
+              li {
+                list-style-type: disc;
+                font-size: 10px;
+              }
+            }
+          }
+        }
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        //
+        //    BE:  I N P U T
+        //
+        const doc_date = '20 JUNI 2024'
+        const company_name = 'ISI COMPANY NAME'
+        const pic_name = 'ISI PIC NAME'
+
+        const company = {
+          address: ' ISI ADDRESS',
+          phone: 'ISI PHONE',
+          fax: 'ISI FAX',
+          nib: 'ISI NIB',
+          npwp: 'ISI NPWP',
+          npwp_address: 'ISI ALAMAT NPWP',
+          email: 'ISI EMAIL',
+          website: 'ISI WEBSITE',
+        }
+
+        const pic = {
+          title: 'ISI PIC TITLE',
+          phone: 'ISI PIC PHONE',
+        }
+
+        const product = {
+          category_ind: 'ISI PRODUCT CATEGORY (IND)',
+          category_eng: 'ISI PRODUCT CATEGORY (ENG)',
+          brand: 'ISI BRAND',
+        }
+
+        const doc = {
+          total_price: 2000000,
+          ppn: 20400,
+          nilai_kontrak: 10000,
+          fascia_name: 'ISI FASCIA NAME',
+        }
+
+        const booths = [
+          {
+            size: 'Booth 3x3',
+            location: 'Hall 1 no.2',
+            price: 1000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          },
+          {
+            size: 'Booth 3x9',
+            location: 'Hall 1 no.3',
+            price: 3000000,
+          }
+        ]
+
+        //
+        //  FE:  S O M E T H I N K
+        //
+        function insertAfter(referenceNode, newNode) {
+          referenceNode.parentNode.insertBefore(
+            newNode,
+            referenceNode.nextSibling,
+          )
+        }
+        function formatMoney(nominal = 0){
+          return nominal.toLocaleString('id', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+          })
+        }
+
+        const fillDocumentDates = document.getElementsByClassName('doc--date')
+        fillDocumentDates[0].textContent = doc_date
+        fillDocumentDates[1].textContent = doc_date
+
+        const fillCompanyNames =
+          document.getElementsByClassName('company--name')
+        fillCompanyNames[0].textContent = company_name
+        fillCompanyNames[1].textContent = company_name
+
+        const fillPicNames = document.getElementsByClassName('pic--name')
+        fillPicNames[0].textContent = pic_name
+        fillPicNames[1].textContent = pic_name
+
+        for (const key in company) {
+          document.getElementById(`company--${key}`).textContent = company[key]
+        }
+
+        for (const key in pic) {
+          document.getElementById(`pic--${key}`).textContent = pic[key]
+        }
+
+        for (const key in product) {
+          document.getElementById(`product--${key}`).textContent = product[key]
+        }
+
+        for (const key in doc) {
+          if(['ppn', 'nilai_kontrak', 'total_price'].includes(key)){
+            document.getElementById(`doc--${key}`).textContent = formatMoney(doc[key])
+          } else {
+            document.getElementById(`doc--${key}`).textContent = doc[key]
+          }
+        }
+
+        const boothLength = booths.length
+        const stands = document.getElementById('stand')
+
+        if(boothLength <= 3) {
+          for (let i = 0; i < booths.length; i++) {
+            const e = booths[i];
+            const newNode = document.createElement('div')
+            newNode.classList.add('stand-item')
+
+            const colNode = document.createElement('div')
+            const colText = document.createTextNode(`${e.size} - ${e.location} (${formatMoney(e.price)})`)
+            colNode.appendChild(colText)
+            colNode.classList.add('stand--col')
+            newNode.appendChild(colNode)
+
+            insertAfter(stands.children[i], newNode)
+          }
+        } else {
+          let boothCol = 3
+          let boothRow = Math.ceil(boothLength / boothCol)
+          if (boothLength >= 4 && boothLength <= 5) {
+            boothCol = 2
+            boothRow = Math.ceil(boothLength / boothCol)
+          }
+
+          let isBreak = false
+          let n = 0
+          for (let i = 0; i < boothRow; i++) {
+            if(isBreak) break
+            const newNode = document.createElement('div')
+            newNode.classList.add('stand-item')
+
+            for (let j = 0; j < boothCol; j++) {
+              const e = booths[n]  || null
+              if(!e) {
+                isBreak = true
+                break
+              }
+
+              const colNode = document.createElement('div')
+              const colText = document.createTextNode(`${e.size} - ${e.location} (${formatMoney(e.price)})`)
+              colNode.appendChild(colText)
+              colNode.classList.add('stand--col')
+              newNode.appendChild(colNode)
+
+              n += 1
+              if(!booths[n]) {
+                isBreak = true
+                break
+              }
+            }
+
+            const flag = boothCol === 2 || (boothCol === 3 && i === boothRow - 1 && boothLength % 3 !== 0)
+
+            if(flag){
+              const colNode = document.createElement('div')
+              colNode.classList.add('stand--col')
+              newNode.appendChild(colNode)
+            }
+            insertAfter(stands.children[i], newNode)
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <!-- P A G E   1 -->
+      <div class="doc">
+        <!-- TOP -->
+        <div>
+          <div class="header">HEADER</div>
+          <p class="g-justify">
+            Kami yang bertanda tangan di bawah ini, menyatakan ikut berpartisipasi
+            sebagai peserta
+            <b>Lomba</b>
+            dan menyetujui semua ketentuan yang telah ditetapkan oleh pihak
+            Penyelenggara.
+          </p>
+
+          <div class="">
+            <div class="form">
+              <div class="form__label">Perusahaan/Instansi :</div>
+              <div class="company--name" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Alamat kantor :</div>
+              <div id="company--address" class="form__answer"></div>
+            </div>
+            <div class="g-flex-item-center">
+              <div class="form">
+                <div class="form__label">Telepon kantor :</div>
+                <div id="company--phone" class="form__answer"></div>
+              </div>
+              <div class="form">
+                <div class="form__label">Fax :</div>
+                <div id="company--fax" class="form__answer"></div>
+              </div>
+            </div>
+            <div class="g-flex-item-center">
+              <div class="form">
+                <div class="form__label">NIB :</div>
+                <div id="company--nib" class="form__answer"></div>
+              </div>
+              <div class="form">
+                <div class="form__label">No. NPWP :</div>
+                <div id="company--npwp" class="form__answer"></div>
+              </div>
+            </div>
+            <div class="form">
+              <div class="form__label">Alamat NPWP :</div>
+              <div id="company--npwp_address" class="form__answer"></div>
+            </div>
+            <div class="g-flex-item-center">
+              <div class="form">
+                <div class="form__label">E-mail :</div>
+                <div id="company--email" class="form__answer"></div>
+              </div>
+              <div class="form">
+                <div class="form__label">Website :</div>
+                <di id="company--website" class="form__answer"></di>
+              </div>
+            </div>
+            <div class="g-flex-item-center">
+              <div class="form">
+                <div class="form__label">Penanggungjawab/PIC :</div>
+                <div class="pic--name form__answer"></div>
+              </div>
+              <div class="form">
+                <div class="form__label">Jabatan :</div>
+                <div id="pic--title" class="form__answer"></div>
+              </div>
+            </div>
+            <div class="form">
+              <div class="form__label">Handphone :</div>
+              <div id="pic--phone" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Jenis Produk (Bahasa Indonesia) :</div>
+              <div id="product--category_ind" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Jenis Produk (Bahasa Inggris) :</div>
+              <div id="product--category_eng" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Merek Produk/Brand :</div>
+              <div id="product--brand" class="form__answer"></div>
+              <div>(Produk Indonesia)</div>
+            </div>
+            <div style="padding-bottom: 8px">
+              <div id="stand-label">Lokasi stan:</div>
+              <div id="stand">
+                <div class="stand-item"></div>
+              </div>
+            </div>
+            <div class="form">
+              <div class="form__label">Total Harga :</div>
+              <div id="doc--total_price" class="form__answer"></div>
+              <div class="g-italic">*) Harga belum termasuk PPn</div>
+            </div>
+            <div class="form">
+              <div class="form__label">PPn 11% :</div>
+              <div id="doc--ppn" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Nilai kontrak :</div>
+              <div id="doc--nilai_kontrak" class="form__answer"></div>
+            </div>
+            <div class="form">
+              <div class="form__label">Nama Fascia di Stand :</div>
+              <div id="doc--fascia_name" class="form__answer"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM -->
+        <div>
+          <div class="signer">
+            <div>
+              <div>
+                Jakarta,
+                <span class="doc--date"></span>
+              </div>
+              <div>Hormat kami</div>
+              <div class="signer__signature-position"></div>
+              <div style="font-size: 12px">
+                Nama, Tanda tangan & cap perusahaan
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">FOOTER</div>
+        </div>
+      </div>
+
+      <!-- P A G E   2 -->
+      <div class="tnc">
+        <div class="tnc__title">
+          SYARAT DAN KETENTUAN KEPESERTAAN LOMBA
+        </div>
+        <div class="tnc__item-container">
+          <!-- L E F T -->
+          <div class="tnc__item-container-col">
+            <div class="tnc__item">
+              <div class="tnc__item__label">A. LABEL</div>
+              <div class="tnc__item__content">CONTENT</div>
+            </div>
+          </div>
+
+          <!-- R I G H T -->
+          <div class="tnc__item-container-col">
+            <div class="tnc__item">
+              <div class="tnc__item__label">G. LABEL</div>
+              <div class="tnc__item__content">CONTENT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

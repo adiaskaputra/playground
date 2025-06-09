@@ -1,0 +1,2 @@
+- variable kalau tidak dipakai akan error
+- constant wajib di init, jika tidak dipakai gpp, tdk seperti varibale yg harus digunakan
