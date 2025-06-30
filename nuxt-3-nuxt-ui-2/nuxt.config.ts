@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@vueuse/nuxt',
+    'nuxt-vuefire',
   ],
   components: {
     global: true,
@@ -46,6 +47,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     apiBaseUrl: '',
+    firebaseAccProjectId: '',
+    firebaseAccPrivateKey: '',
+    firebaseAccClientEmail: '',
   },
   devServer: {
     port: 8000,
@@ -105,6 +109,16 @@ export default defineNuxtConfig({
       permissionsPolicy: {
         camera: ['self'],
       },
+    },
+  },
+  vuefire: {
+    config: {
+      apiKey: process.env.NUXT_FIREBASE_API_KEY,
+      authDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.NUXT_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.NUXT_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.NUXT_FIREBASE_APP_ID,
     },
   },
 })

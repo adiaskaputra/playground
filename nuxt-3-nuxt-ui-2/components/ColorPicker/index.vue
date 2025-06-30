@@ -2,7 +2,7 @@
 
 <template>
   <div class="box">
-    <div class="box__title">Change color mode</div>
+    <!-- <div class="box__title">{{ $colorMode }}</div> -->
     <div class="box__option">
       <div v-for="color of ['system', 'light', 'dark', 'sepia']" :key="color">
         <component

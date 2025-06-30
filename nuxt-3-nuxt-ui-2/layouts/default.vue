@@ -1,10 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <ColorPicker />
-    <NuxtUiComponent class="mt-4" />
-  </div>
+  <slot />
 </template>
 
 <style lang="postcss" scoped></style>

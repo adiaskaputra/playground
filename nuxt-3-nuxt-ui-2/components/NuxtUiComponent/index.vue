@@ -42,14 +42,7 @@ const nuxtUiComponent = shallowRef<{ [key: string]: string[] }>({
     'tabs',
     'vertical-navigation',
   ],
-  overlay: [
-    'context-menu',
-    'modal',
-    'notification',
-    'popover',
-    'slideover',
-    'tooltip',
-  ],
+  overlay: ['context-menu', 'modal', 'notification', 'popover', 'slideover', 'tooltip'],
 })
 </script>
 
@@ -81,7 +74,7 @@ const nuxtUiComponent = shallowRef<{ [key: string]: string[] }>({
   }
 
   &__content {
-    @apply flex flex-col items-start justify-normal gap-12;
+    @apply flex flex-col items-start justify-normal gap-[52px];
     @apply w-full pl-4;
   }
 
