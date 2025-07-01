@@ -1,7 +1,9 @@
 <script setup lang="ts"></script>
 
 <template>
-  <slot />
+  <ClientOnly>
+    <slot />
+  </ClientOnly>
 </template>
 
 <style lang="postcss" scoped></style>

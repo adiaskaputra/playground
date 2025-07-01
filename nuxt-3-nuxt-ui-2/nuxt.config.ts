@@ -1,3 +1,5 @@
+import { database } from "firebase-admin";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -47,12 +49,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     apiBaseUrl: '',
-    firebaseAccProjectId: '',
-    firebaseAccPrivateKey: '',
-    firebaseAccClientEmail: '',
   },
   devServer: {
-    port: 8000,
+    port: 3000,
   },
   compatibilityDate: '2025-11-01',
   typescript: {
@@ -115,6 +114,7 @@ export default defineNuxtConfig({
     config: {
       apiKey: process.env.NUXT_FIREBASE_API_KEY,
       authDomain: process.env.NUXT_FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.NUXT_FIREBASE_DATABASE_URL,
       projectId: process.env.NUXT_FIREBASE_PROJECT_ID,
       storageBucket: process.env.NUXT_FIREBASE_STORAGE_BUCKET,
       messagingSenderId: process.env.NUXT_FIREBASE_MESSAGING_SENDER_ID,
