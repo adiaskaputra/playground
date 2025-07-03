@@ -8,7 +8,10 @@ Tools tambahan: ts-node jika pakai TypeScript, dan dotenv kalau mau config/env.
 
 ```
 ✅ Test specific scenario
-npx cucumber-js --name "Search for Playwright"
+npx cucumber-js --name "User opens an expired link"
+npx cucumber-js --name "User opens an invalid link"
+npx cucumber-js --name "User opens a valid landing link"
+npx cucumber-js --name "User opens a valid waiting link"
 ```
 ```
 root
