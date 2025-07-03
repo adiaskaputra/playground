@@ -5,7 +5,7 @@ import { useDatabase, useList } from "vuefire";
 import type { Todo } from "@/components/TodoItem.vue";
 
 const db = useDatabase();
-const todosRef = dbRef(db, "todos");
+const todosRef = dbRef(db, "dgtlid-connects");
 
 // TODO:
 // const finishedTodos = query(todosRef, where('finished', '==', true))
@@ -27,11 +27,11 @@ function addTodo() {
 }
 
 function updateTodo(id: string, newTodo: Todo) {
-  update(dbRef(db, "todos/" + id), newTodo);
+  update(dbRef(db, "dgtlid-connects/" + id), newTodo);
 }
 
 function removeTodo(id: string) {
-  remove(dbRef(db, "todos/" + id));
+  remove(dbRef(db, "dgtlid-connects/" + id));
 }
 </script>
 

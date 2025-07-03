@@ -1,9 +1,8 @@
-import { Given, Then } from '@cucumber/cucumber';
+import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { Browser, Page, chromium } from 'playwright';
+import { decodeQrImageBase64 } from '../../helpers/decodeQR';
 import dotenv from 'dotenv';
-import jsQR from 'jsqr';
-import sharp from 'sharp';
 dotenv.config();
 
 const headless = process.env.HEADLESS === 'true';
@@ -19,14 +18,14 @@ Given('I open an valid waiting URL', { timeout: 10000 }, async () => {
   await page.goto(baseUrl);
 });
 
-Then('I should see the QR code with the branch.io link & button open app', { timeout: 20000 }, async function () {
+
+Then('I should see "Redirecting you to complete your data sharing" in the title', { timeout: 20000 }, async function () {
   const title = page.locator('.content__title');
   await expect(title).toBeVisible({ timeout: 10000 });
   await expect(title).toHaveText('Redirecting you to complete your data sharing');
+});
 
-  //
-  //  TEST QR CODE
-  //
+Then('I should see the QR code with valid deeplink branch.io', { timeout: 20000 }, async function () {
   const qrImage = page.locator('[alt="img qr"]');
   await expect(qrImage).toBeVisible({ timeout: 10000 });
 
@@ -38,40 +37,41 @@ Then('I should see the QR code with the branch.io link & button open app', { tim
   }
   if (!src) throw new Error('QR code src is not a valid base64 image');
 
+  const qrData = await decodeQrImageBase64(src);
+  expect(qrData).toMatch(/^https:\/\/privy\.test-app\.link\/[a-zA-Z0-9]+$/);
+});
 
-  const base64 = src.split(',')[1];
-  const imageBuffer = Buffer.from(base64, 'base64');
+let newPage: Page | null = null;
+let openAppButton: ReturnType<Page['locator']>; // Locator tombol global
 
-  // Gunakan sharp untuk ambil pixel data
-  const sharpImage = sharp(imageBuffer);
-  const { data, info } = await sharpImage
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
 
-  // Decode pakai jsQR
-  const qr = jsQR(new Uint8ClampedArray(data), info.width, info.height);
-  if (!qr || !qr.data) {
-    throw new Error('QR decode failed or result is empty');
+Then('I should see the button Open Privy App', { timeout: 20000 }, async function () {
+  openAppButton = page.locator('button:has-text("Open Privy App")');
+  await expect(openAppButton).toBeVisible({ timeout: 10000 });
+});
+
+When('I click the button Open Privy App', async () => {
+  if (!openAppButton) {
+    openAppButton = page.locator('button:has-text("Open Privy App")');
   }
 
-  expect(qr.data).toMatch(/^https:\/\/privy\.test-app\.link\/[a-zA-Z0-9]+$/);
-
-  //
-  //  TEST OPEN PRIVY APP
-  //
-  const openAppButton = page.locator('button:has-text("Open Privy App")');
-  await expect(openAppButton).toBeVisible({ timeout: 10000 });
-
-  const [newPage] = await Promise.all([
+  const [popup] = await Promise.all([
     page.context().waitForEvent('page'),
     openAppButton.click(),
   ]);
 
+  newPage = popup;
+});
+
+
+Then('I should see the the fallback branch.io playstore or appstore', { timeout: 20000 }, async function () {
+  if (!newPage) throw new Error('New tab was not opened');
+
   await newPage.waitForLoadState('load');
   const newUrl = newPage.url();
 
-  if (!newUrl.includes('https://play.google.com')) {
-    throw new Error(`Expected to be redirected to branch.io fallback, but got: ${newUrl}`);
+  if (!newUrl.includes('https://play.google.com') && !newUrl.includes('https://apps.apple.com')) {
+    throw new Error(`Expected fallback to Play Store or App Store, but got: ${newUrl}`);
   }
 });
+

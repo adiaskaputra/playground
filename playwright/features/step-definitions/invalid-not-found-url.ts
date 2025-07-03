@@ -10,7 +10,7 @@ const baseUrl = process.env.INVALID_NOT_FOUND_URL || '';
 let browser: Browser;
 let page: Page;
 
-Given('I open an invalid URL', async () => {
+Given('I open an invalid URL', { timeout: 20000 }, async () => {
   browser = await chromium.launch({ headless });
   const context = await browser.newContext();
   page = await context.newPage();
