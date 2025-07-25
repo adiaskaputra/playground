@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { ref as dbRef } from "firebase/database";
 import { useDatabase, useDatabaseObject } from "vuefire";
+const config = useRuntimeConfig();
+const route = useRoute();
 
 const db = useDatabase();
-const todoRef = dbRef(db, "todos/" + "9c5c3e38-b48e-4f67-919d-83ab1638a157");
+const todoRef = dbRef(db, `${config.public.pathRtdbDigitalId}/` + route.query.identifier);
 
 const todo = useDatabaseObject(todoRef);
+
+watch(todo, () => {
+  console.log("WATCHER", todo.value);
+});
 </script>
 
 <template>

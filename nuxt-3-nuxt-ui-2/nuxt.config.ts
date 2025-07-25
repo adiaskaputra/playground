@@ -49,6 +49,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     apiBaseUrl: '',
+    public: {
+      pathRtdb: ''
+    }
   },
   devServer: {
     port: 3000,
